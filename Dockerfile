@@ -1,4 +1,4 @@
-FROM aspnet
+FROM microsoft/aspnet
 # copy the contents of the local directory to /app/ on the image
 ADD ./AsiduaChatHack/src/AsiduaChatHack/ /app
 # set the working directory for subsequent commands
@@ -13,4 +13,4 @@ EXPOSE 5000
 # When the image starts it will execute the “k web” command
 # effectively starting our web application
 # (listening on port 5000 by default)
-ENTRYPOINT ["k", "web"]
+ENTRYPOINT ["k", "kestrel"]
