@@ -24,6 +24,7 @@ namespace AsiduaChatHack
             Configuration = new Configuration()
                 .AddJsonFile("config.json")
                 .AddEnvironmentVariables();
+
         }
 
         public IConfiguration Configuration { get; set; }
@@ -43,6 +44,10 @@ namespace AsiduaChatHack
             // Add MVC services to the services container.
             services.AddMvc();
 
+            services.ConfigureSignalR(c =>
+            {
+                c.EnableJSONP = true;
+            });
             services.AddSignalR();
             // Uncomment the following line to add Web API servcies which makes it easier to port Web API 2 controllers.
             // You need to add Microsoft.AspNet.Mvc.WebApiCompatShim package to project.json
@@ -56,6 +61,7 @@ namespace AsiduaChatHack
             // Configure the HTTP request pipeline.
             // Add the console logger.
             loggerfactory.AddConsole();
+
 
             // Add the following to the request pipeline only in development environment.
             if (string.Equals(env.EnvironmentName, "Development", StringComparison.OrdinalIgnoreCase))
@@ -89,7 +95,7 @@ namespace AsiduaChatHack
                 // routes.MapWebApiRoute("DefaultApi", "api/{controller}/{id?}");
             });
 
-            app.UseSignalR();
+            app.UseSignalR("/signalr");
         }
     }
 }
