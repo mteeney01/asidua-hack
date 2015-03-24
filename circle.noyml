@@ -1,0 +1,12 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker --tls info
+    - docker --tls build -t myapp .
+
+deployment:
+	override: 
+	- docker --tls run -d -t -p 8080:5000 myapp
