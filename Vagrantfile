@@ -32,7 +32,8 @@ Vagrant.configure('2') do |config|
 		git clone https://github.com/mteeney01/asidua-hack.git
 		
 	SCRIPT
-
+	
+	config.vm.provision "shell", inline: $script, privileged: false
     config.ssh.username = 'andrewfletcher' # the one used to create the VM
     config.ssh.password = 'Pa$$w0rd' # the one used to create the VM
 end
