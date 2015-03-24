@@ -2,7 +2,7 @@ Vagrant.configure('2') do |config|
     config.vm.box = 'azure'
 
     config.vm.provider :azure do |azure|
-        azure.mgmt_certificate = 'C:\Users\afletche\HTNew\azureCert.pfx'
+        azure.mgmt_certificate = 'C:\Users\afletche\Desktop\azureCert.pfx'
         azure.mgmt_endpoint = 'https://management.core.windows.net'
         azure.subscription_id = '170c7ee8-1da2-4364-aecd-c9cb18fd8a6e'
 
@@ -16,23 +16,21 @@ Vagrant.configure('2') do |config|
       # Provide the following values if creating a *Nix VM
       azure.ssh_port = '22'
 
-      azure.tcp_endpoints = '80:8080' # opens the Remote Desktop internal port that listens on public port 53389. Without this, you cannot RDP to a Windows VM.
+      azure.tcp_endpoints = '80:8080'
     end
+
+$script = <<SCRIPT
 	
-	$script = <<SCRIPT
-		sudo apt-key adv --keyserver pgp.mit.edu --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-		echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
-		sudo apt-get update
-		sudo apt-get -y install curl unzip git-core mono-devel
-		mozroots --import --sync
-		curl https://raw.githubusercontent.com/aspnet/Home/master/kvminstall.sh | sh && source ~/.kre/kvm/kvm.sh && kvm upgrade
-		
-		apt-get -y install docker 
-		
-		git clone https://github.com/mteeney01/asidua-hack.git
-		
-	SCRIPT
+sudo apt-key adv --keyserver pgp.mit.edu --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
+sudo apt-get update
+sudo apt-get -y install curl unzip git-core mono-devel docker
+mozroots --import --sync
+curl https://raw.githubusercontent.com/aspnet/Home/master/kvminstall.sh | sh && source ~/.kre/kvm/kvm.sh && kvm upgrade
+git clone https://github.com/mteeney01/asidua-hack.git
 	
+SCRIPT
+    
 	config.vm.provision "shell", inline: $script, privileged: false
     config.ssh.username = 'andrewfletcher' # the one used to create the VM
     config.ssh.password = 'Pa$$w0rd' # the one used to create the VM
